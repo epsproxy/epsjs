@@ -1,85 +1,5 @@
 const abi: any = [
     {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_nominator",
-                "type": "address"
-            },
-            {
-                "internalType": "address",
-                "name": "_delivery",
-                "type": "address"
-            }
-        ],
-        "name": "acceptNomination",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "deleteRecordByNominator",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "deleteRecordByProxy",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_proxy",
-                "type": "address"
-            }
-        ],
-        "name": "makeNomination",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_registerFee",
-                "type": "uint256"
-            },
-            {
-                "internalType": "address",
-                "name": "_treasury",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "constructor"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "bool",
-                "name": "bypassStatus",
-                "type": "bool"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "timestamp",
-                "type": "uint256"
-            }
-        ],
-        "name": "BypassSet",
-        "type": "event"
-    },
-    {
         "anonymous": false,
         "inputs": [
             {
@@ -110,6 +30,12 @@ const abi: any = [
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "timestamp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "provider",
                 "type": "uint256"
             }
         ],
@@ -142,6 +68,12 @@ const abi: any = [
                 "internalType": "uint256",
                 "name": "timestamp",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "provider",
+                "type": "uint256"
             }
         ],
         "name": "NominationAccepted",
@@ -152,9 +84,9 @@ const abi: any = [
         "inputs": [
             {
                 "indexed": false,
-                "internalType": "uint256",
+                "internalType": "string",
                 "name": "initiator",
-                "type": "uint256"
+                "type": "string"
             },
             {
                 "indexed": true,
@@ -172,6 +104,12 @@ const abi: any = [
                 "indexed": false,
                 "internalType": "uint256",
                 "name": "timestamp",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "provider",
                 "type": "uint256"
             }
         ],
@@ -198,6 +136,12 @@ const abi: any = [
                 "internalType": "uint256",
                 "name": "timestamp",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "provider",
+                "type": "uint256"
             }
         ],
         "name": "NominationMade",
@@ -207,29 +151,10 @@ const abi: any = [
         "anonymous": false,
         "inputs": [
             {
-                "indexed": true,
-                "internalType": "address",
-                "name": "previousOwner",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "OwnershipTransferred",
-        "type": "event"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
                 "indexed": false,
-                "internalType": "uint256",
+                "internalType": "string",
                 "name": "initiator",
-                "type": "uint256"
+                "type": "string"
             },
             {
                 "indexed": true,
@@ -254,6 +179,12 @@ const abi: any = [
                 "internalType": "uint256",
                 "name": "timestamp",
                 "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "provider",
+                "type": "uint256"
             }
         ],
         "name": "RecordDeleted",
@@ -273,90 +204,6 @@ const abi: any = [
         "type": "event"
     },
     {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "setBypassOff",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "setBypassOn",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "_registerFee",
-                "type": "uint256"
-            }
-        ],
-        "name": "setRegisterFee",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_treasuryAddress",
-                "type": "address"
-            }
-        ],
-        "name": "setTreasuryAddress",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "anonymous": false,
         "inputs": [
             {
@@ -368,19 +215,6 @@ const abi: any = [
         ],
         "name": "TreasuryAddressSet",
         "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "_delivery",
-                "type": "address"
-            }
-        ],
-        "name": "updateDeliveryAddress",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
     },
     {
         "anonymous": false,
@@ -402,31 +236,27 @@ const abi: any = [
         "type": "event"
     },
     {
-        "stateMutability": "payable",
-        "type": "fallback"
-    },
-    {
         "inputs": [
             {
+                "internalType": "address",
+                "name": "_nominator",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_delivery",
+                "type": "address"
+            },
+            {
                 "internalType": "uint256",
-                "name": "_amount",
+                "name": "_provider",
                 "type": "uint256"
             }
         ],
-        "name": "withdraw",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
-            }
-        ],
+        "name": "acceptNomination",
+        "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
-    },
-    {
-        "stateMutability": "payable",
-        "type": "receive"
     },
     {
         "inputs": [
@@ -458,6 +288,32 @@ const abi: any = [
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_provider",
+                "type": "uint256"
+            }
+        ],
+        "name": "deleteRecordByNominator",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_provider",
+                "type": "uint256"
+            }
+        ],
+        "name": "deleteRecordByProxy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -506,19 +362,6 @@ const abi: any = [
             {
                 "internalType": "bool",
                 "name": "isProxied",
-                "type": "bool"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "getBypass",
-        "outputs": [
-            {
-                "internalType": "bool",
-                "name": "bypassStatus",
                 "type": "bool"
             }
         ],
@@ -723,6 +566,24 @@ const abi: any = [
         "inputs": [
             {
                 "internalType": "address",
+                "name": "_proxy",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_provider",
+                "type": "uint256"
+            }
+        ],
+        "name": "makeNomination",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
                 "name": "_nominator",
                 "type": "address"
             }
@@ -784,19 +645,6 @@ const abi: any = [
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "owner",
-        "outputs": [
-            {
-                "internalType": "address",
-                "name": "",
-                "type": "address"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "inputs": [
             {
                 "internalType": "address",
@@ -826,6 +674,81 @@ const abi: any = [
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_registerFee",
+                "type": "uint256"
+            }
+        ],
+        "name": "setRegisterFee",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_treasuryAddress",
+                "type": "address"
+            }
+        ],
+        "name": "setTreasuryAddress",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_delivery",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_provider",
+                "type": "uint256"
+            }
+        ],
+        "name": "updateDeliveryAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]

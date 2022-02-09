@@ -1,26 +1,28 @@
 import { Contract } from 'web3-eth-contract'
-import contractABI from './abi'
+import contractABI from './abi/epsABI'
 
 declare const window: any;
-declare const Web3: any;
+
+let Web3: any;
+if (typeof process !== "undefined") {
+    Web3  = require("web3")
+} else {
+    Web3 = window.Web3
+}
 
 export class EpsHelper {
     private contract: Contract;
     private web3: typeof Web3;
-    private currentProvider: string;
+    private contractAddress: string;
+    private provider: any
 
-    constructor(private contractAddress: string) {
-        if (!window.ethereum) {
-            throw new Error("Non ethereum enabled browser")
-        }
+    constructor(contractAddress: string, provider: any) {
         this.contractAddress = contractAddress;
-        this.currentProvider = "metamask";
+        this.provider = provider
     }
 
-    static async init(contractAddress: string, provider: any) {
-        const helper = new EpsHelper(contractAddress);
-        helper.loadContract(provider);
-        return helper;
+    async init() {
+        this.loadContract(this.provider);
     }
 
     loadContract(provider: any) {
@@ -28,23 +30,12 @@ export class EpsHelper {
         this.contract = new this.web3.eth.Contract(contractABI, this.contractAddress);
     }
 
-    async changeProvider(providerName: string, provider: any) {
-        if (providerName === this.currentProvider) {
-            return
-        }
-        this.currentProvider = providerName;
+    async changeProvider(provider: any) {
         this.web3 = new Web3(provider);
         this.contract = new this.web3.eth.Contract(contractABI, this.contractAddress);
     }
 
     async getAccount() {
-        // if (this.currentProvider === 'walletconnect') {
-        //     const user = {
-        //         address: this.web3.currentProvider.accounts[0]
-        //     };
-        //     return user;
-        // }
-
         const userAddress = await this.web3.eth.getAccounts();
         if (userAddress && userAddress.length === 0) {
             throw new Error("No connected user")
@@ -77,33 +68,55 @@ export class EpsHelper {
         return this.contract.methods.addressIsActive(address).call()
     }
 
-    fromWei(amount: number) {
+    formatUnits(amount: number) {
         if (!amount) {
             return 0
         }
         return this.web3.utils.fromWei(amount + "")
     }
 
-    deleteRecordByProxy(userAddress: string) {
-        return this.contract.methods.deleteRecordByProxy().send({ from: userAddress })
+    deleteRecordByProxy(userAddress: string, providerCode?: number) {
+        if (!providerCode) {
+            providerCode = 0
+        }
+        return this.contract.methods.deleteRecordByProxy(providerCode).send({ from: userAddress })
     }
 
-    updateDeliveryAddress(deliveryAddress: string, userAddress: string) {
-        return this.contract.methods.updateDeliveryAddress(deliveryAddress).send({ from: userAddress })
+    updateDeliveryAddress(deliveryAddress: string, userAddress: string, providerCode?: number) {
+        if (!providerCode) {
+            providerCode = 0
+        }
+        return this.contract.methods.updateDeliveryAddress(deliveryAddress, providerCode).send({ from: userAddress })
     }
 
-    deleteRecordByNominator(userAddress: string) {
-        return this.contract.methods.deleteRecordByNominator().send({ from: userAddress })
+    deleteRecordByNominator(userAddress: string, providerCode?: number) {
+        if (!providerCode) {
+            providerCode = 0
+        }
+        return this.contract.methods.deleteRecordByNominator(providerCode).send({ from: userAddress })
     }
 
-    makeNomination(proxyAddress: string, registerFee: number, userAddress: string) {
-        return this.contract.methods.makeNomination(proxyAddress).send({ value: registerFee, from: userAddress })
+    makeNomination(proxyAddress: string, registerFee: number, userAddress: string, providerCode?: number) {
+        if (!providerCode) {
+            providerCode = 0
+        }
+        return this.contract.methods.makeNomination(proxyAddress, providerCode).send({ value: registerFee, from: userAddress })
     }
 
-    acceptNomination(nominatingAddress: string, deliveryAddress: string, userAddress: string) {
-        return this.contract.methods.acceptNomination(nominatingAddress, deliveryAddress).send({ from: userAddress })
+    acceptNomination(nominatingAddress: string, deliveryAddress: string, userAddress: string, providerCode?: number) {
+        if (!providerCode) {
+            providerCode = 0
+        }
+        return this.contract.methods.acceptNomination(nominatingAddress, deliveryAddress, providerCode).send({ from: userAddress })
     }
 
+    async getNetworkType() {
+        return this.web3.eth.net.getNetworkType()
+    }
+
+    async getAddresses(address: string) {
+        return this.contract.methods.getAddresses(address).call()
+    }
 }
 
 export const getFormattedAddress = (addr: string, char: number) => {
@@ -121,3 +134,29 @@ export const isAddress = (addr: string) => {
 
     return true
 }
+
+export const getChainId = (networkType: string) => {
+    let chainId = 1;
+    switch (networkType) {
+        case "main":
+            chainId = 1
+            break;
+        case "ropsten":
+            chainId = 3
+            break;
+        case "kovan":
+            chainId = 42
+            break;
+        case "rinkeby":
+            chainId = 4
+            break;
+        case "goerly":
+            chainId = 5
+            break;
+        default:
+            chainId = 1;
+    }
+
+    return chainId;
+}
+
